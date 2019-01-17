@@ -58,7 +58,8 @@ public abstract class SecretsCommand implements Runnable {
   @Option(
     name = "-p",
     title = "Password",
-    description = "Password - (Note : Use password if it is really required)")
+    description = "Password - (Note : Use password if it is really required)"
+  )
   public String password;
 
   /** Holds application details. */
@@ -89,8 +90,7 @@ public abstract class SecretsCommand implements Runnable {
 
   private void validateAuthDomain() {
     try {
-      log.info("ValidateAuthDomain::" + domain);
-      AuthDomain.getAuthDomain(domain);
+      AuthDomain.valueOf(domain.toUpperCase());
     } catch (IllegalArgumentException iae) {
       throw new IllegalArgumentException(
           "Invalid auth domain "
