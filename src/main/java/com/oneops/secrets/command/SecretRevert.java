@@ -24,7 +24,6 @@ import static java.lang.String.format;
 import com.oneops.secrets.proxy.SecretsProxyException;
 import com.oneops.secrets.proxy.model.Result;
 import io.airlift.airline.*;
-import java.io.Console;
 import java.io.IOException;
 
 /**
@@ -49,19 +48,15 @@ public class SecretRevert extends SecretsCommand {
   @Override
   public void exec() {
     try {
-
-      Console console = System.console();
-
-      if (console != null) {
-        String in =
-            console.readLine(
-                warn(
-                    String.format(
-                        "You're going to reset the current version index of the secret to %d. Do you want to proceed (y/n)? ",
-                        version)));
-        if (in == null || !in.equalsIgnoreCase("y")) {
-          throw new IllegalStateException("Exiting");
-        }
+      String in =
+          System.console()
+              .readLine(
+                  warn(
+                      String.format(
+                          "You're going to reset the current version index of the secret to %d. Do you want to proceed (y/n)? ",
+                          version)));
+      if (in == null || !in.equalsIgnoreCase("y")) {
+        throw new IllegalStateException("Exiting");
       }
 
       Result<Void> result = secretsClient.setSecretVersion(app.getName(), secretName, version);

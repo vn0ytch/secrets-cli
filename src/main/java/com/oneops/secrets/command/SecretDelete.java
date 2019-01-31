@@ -24,7 +24,6 @@ import static java.lang.String.format;
 import com.oneops.secrets.proxy.SecretsProxyException;
 import com.oneops.secrets.proxy.model.Result;
 import io.airlift.airline.*;
-import java.io.Console;
 import java.io.IOException;
 
 /**
@@ -42,16 +41,13 @@ public class SecretDelete extends SecretsCommand {
   public void exec() {
 
     try {
-
-      Console console = System.console();
-
-      if (console != null) {
-        String in =
-            console.readLine(
-                warn("The delete secret operation is irrevocable. Do you want to proceed (y/n)? "));
-        if (in == null || !in.equalsIgnoreCase("y")) {
-          throw new IllegalStateException("Exiting");
-        }
+      String in =
+          System.console()
+              .readLine(
+                  warn(
+                      "The delete secret operation is irrevocable. Do you want to proceed (y/n)? "));
+      if (in == null || !in.equalsIgnoreCase("y")) {
+        throw new IllegalStateException("Exiting");
       }
 
       Result<Void> result = secretsClient.deleteSecret(app.getName(), secretName);
